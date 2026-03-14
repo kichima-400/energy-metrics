@@ -15,9 +15,12 @@ import {
 
 const PERIODS = [
   { label: "1ヶ月", days: 30 },
+  { label: "3ヶ月", days: 90 },
   { label: "6ヶ月", days: 180 },
-  { label: "1年", days: 365 },
-  { label: "5年", days: 365 * 5 },
+  { label: "1年",   days: 365 },
+  { label: "5年",   days: 365 * 5 },
+  { label: "10年",  days: 365 * 10 },
+  { label: "全期間", days: 365 * 15 },
 ] as const;
 
 const DEFAULT_INDICATORS = ["wti_crude", "usd_jpy", "electricity", "city_gas"];

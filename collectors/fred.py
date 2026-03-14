@@ -10,6 +10,8 @@ FRED（セントルイス連銀）データ取得スクリプト
   - 豪州石炭価格         (PCOALAUUSDM)    月次
   - 米国政策金利         (FEDFUNDS)       月次
   - 日本政策金利         (INTGSTJPM193N)  月次
+  - 欧州天然ガス(TTF連動)(PNGASEUUSDM)   月次  ← 中東情勢で高騰
+  - アジアLNG現物(JKM)  (PNGASJPUSDM)   月次  ← 中東情勢で高騰
 
 出力:
   - data/fred_daily.csv   （日次指標）
@@ -54,6 +56,8 @@ MONTHLY_SERIES = {
     "coal_australia_usd": "PCOALAUUSDM",    # 豪州石炭 (USD/トン)
     "fed_funds_rate": "FEDFUNDS",            # 米国政策金利 (%)
     "japan_interest_rate": "INTGSTJPM193N", # 日本政策金利 (%)
+    "ttf_gas_usd": "PNGASEUUSDM",           # 欧州天然ガス/TTF連動 (USD/MMBtu) ← 中東情勢で高騰
+    "jkm_lng_usd": "PNGASJPUSDM",          # アジアLNG現物/JKM (USD/MMBtu)  ← 中東情勢で高騰
 }
 
 
@@ -121,6 +125,15 @@ def save_csv(df: pd.DataFrame, path: str, label: str) -> None:
 
     if os.path.exists(path):
         existing = pd.read_csv(path, index_col="date", parse_dates=True)
+        # 新しい列が追加された場合は既存データにジョインして更新
+        new_cols = [c for c in df.columns if c not in existing.columns]
+        if new_cols:
+            merged = existing.join(df[new_cols], how="outer")
+            new_rows = df[~df.index.isin(merged.index)]
+            combined = pd.concat([merged, new_rows]).sort_index()
+            combined.to_csv(path)
+            print(f"  {label}: 新列 {new_cols} を追加 → 合計 {len(combined)} 行")
+            return
         # 既存にない日付の行のみ追記
         new_rows = df[~df.index.isin(existing.index)]
         if new_rows.empty:
@@ -163,11 +176,15 @@ def _print_summary(daily_df: pd.DataFrame, monthly_df: pd.DataFrame) -> None:
         "coal_australia_usd": "豪州石炭     ",
         "fed_funds_rate": "米国政策金利 ",
         "japan_interest_rate": "日本政策金利 ",
+        "ttf_gas_usd": "欧州天然ガス  ",
+        "jkm_lng_usd": "アジアLNG    ",
     }
     m_units = {
         "coal_australia_usd": "USD/トン",
         "fed_funds_rate": "%",
         "japan_interest_rate": "%",
+        "ttf_gas_usd": "USD/MMBtu",
+        "jkm_lng_usd": "USD/MMBtu",
     }
     for col, label in m_labels.items():
         if col in monthly_df.columns:

@@ -29,6 +29,7 @@ export type SummaryItem = {
   latest_value: number;
   latest_date: string;
   diff_prev: number | null;
+  prev_date: string | null;
   diff_month: number | null;
 };
 

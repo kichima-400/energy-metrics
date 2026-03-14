@@ -19,13 +19,14 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data")
 # frequency: データ頻度
 
 INDICATORS: list[dict] = [
-    # 国際原油
-    {"id": "wti_crude",      "csv": "fred_daily.csv",    "column": "wti_crude_usd",      "label": "WTI原油",         "unit": "USD/バレル", "frequency": "daily",   "category": "原油"},
-    {"id": "brent_crude",    "csv": "fred_daily.csv",    "column": "brent_crude_usd",    "label": "Brent原油",       "unit": "USD/バレル", "frequency": "daily",   "category": "原油"},
+    # 国際原油（Yahoo Finance 先物価格 CL=F / BZ=F — FREDより約4日早い）
+    {"id": "wti_crude",      "csv": "shipping_daily.csv", "column": "wti_crude_usd",   "label": "WTI原油",   "unit": "USD/バレル", "frequency": "daily", "category": "原油"},
+    {"id": "brent_crude",    "csv": "shipping_daily.csv", "column": "brent_crude_usd", "label": "Brent原油", "unit": "USD/バレル", "frequency": "daily", "category": "原油"},
     # 天然ガス
-    {"id": "henry_hub",      "csv": "fred_daily.csv",    "column": "henry_hub_usd",      "label": "Henry Hub LNG",   "unit": "USD/MMBtu",  "frequency": "daily",   "category": "天然ガス"},
-    {"id": "lng_export",     "csv": "eia_monthly.csv",   "column": "us_lng_export_price_usd_mcf", "label": "US LNG輸出価格", "unit": "USD/MCF", "frequency": "monthly", "category": "天然ガス"},
-    {"id": "gas_storage",    "csv": "eia_weekly.csv",    "column": "us_gas_storage_bcf", "label": "米国ガス在庫",     "unit": "BCF",        "frequency": "weekly",  "category": "天然ガス"},
+    {"id": "henry_hub",      "csv": "fred_daily.csv",    "column": "henry_hub_usd",      "label": "Henry Hub LNG",       "unit": "USD/MMBtu",  "frequency": "daily",   "category": "天然ガス"},
+    {"id": "ttf_gas",        "csv": "shipping_daily.csv", "column": "ttf_gas_eur_mwh",   "label": "欧州天然ガス(TTF)",   "unit": "EUR/MWh",    "frequency": "daily",   "category": "天然ガス"},
+    {"id": "jkm_lng",        "csv": "fred_monthly.csv",  "column": "jkm_lng_usd",        "label": "アジアLNG(JKM)",     "unit": "USD/MMBtu",  "frequency": "monthly", "category": "天然ガス"},
+    {"id": "gas_storage",    "csv": "eia_weekly.csv",    "column": "us_gas_storage_bcf", "label": "米国ガス在庫",         "unit": "BCF",        "frequency": "weekly",  "category": "天然ガス"},
     # 石炭
     {"id": "coal_australia", "csv": "fred_monthly.csv",  "column": "coal_australia_usd", "label": "豪州石炭",         "unit": "USD/トン",   "frequency": "monthly", "category": "石炭"},
     # 為替・金利
@@ -39,7 +40,11 @@ INDICATORS: list[dict] = [
     {"id": "kerosene",       "csv": "estat_monthly.csv", "column": "kerosene_index",     "label": "灯油指数",         "unit": "指数(2020=100)", "frequency": "monthly", "category": "国内"},
     # 卸売電力
     {"id": "jepx_system",   "csv": "jepx_spot.csv",     "column": "system_price_jpy_kwh", "label": "JEPX システムプライス", "unit": "円/kWh", "frequency": "daily", "category": "国内"},
-    {"id": "jepx_tokyo",    "csv": "jepx_spot.csv",     "column": "area_price_tokyo",   "label": "JEPX 東京エリア", "unit": "円/kWh",     "frequency": "daily",   "category": "国内"},
+    {"id": "jepx_tokyo",    "csv": "jepx_spot.csv",     "column": "area_price_tokyo",   "label": "JEPX 東京エリア",     "unit": "円/kWh",   "frequency": "daily",   "category": "国内"},
+    # 海運（中東情勢で注目）
+    {"id": "bdry",  "csv": "shipping_daily.csv", "column": "bdry", "label": "ドライバルク運賃(BDRY)",    "unit": "USD",  "frequency": "daily", "category": "海運"},
+    {"id": "bwet",  "csv": "shipping_daily.csv", "column": "bwet", "label": "タンカー運賃ETF(BWET)",     "unit": "USD",  "frequency": "daily", "category": "海運"},
+    {"id": "zim",   "csv": "shipping_daily.csv", "column": "zim",  "label": "コンテナ海運株(ZIM)",       "unit": "USD",  "frequency": "daily", "category": "海運"},
 ]
 
 _INDICATOR_MAP: dict[str, dict] = {ind["id"]: ind for ind in INDICATORS}
@@ -57,6 +62,9 @@ def _load_csv(filename: str) -> pd.DataFrame:
 
 def _get_df(indicator: dict) -> pd.Series:
     """指標定義からSeriesを取得する。JEPXは日次平均に集約する。"""
+    path = os.path.join(DATA_DIR, indicator["csv"])
+    if not os.path.exists(path):
+        return pd.Series(dtype=float)
     df = _load_csv(indicator["csv"])
     col = indicator["column"]
     if col not in df.columns:
@@ -156,7 +164,9 @@ def get_summary() -> list[dict]:
         latest_date = s.index[-1].strftime("%Y-%m-%d")
 
         # 前の値との差分
-        prev_day = s[s.index < s.index[-1]].iloc[-1] if len(s) >= 2 else None
+        s_prev = s[s.index < s.index[-1]]
+        prev_day = s_prev.iloc[-1] if len(s_prev) >= 1 else None
+        prev_date = s_prev.index[-1].strftime("%Y-%m-%d") if len(s_prev) >= 1 else None
         diff_prev = round(float(latest_val - prev_day), 4) if prev_day is not None else None
 
         # 約1ヶ月前
@@ -173,6 +183,7 @@ def get_summary() -> list[dict]:
             "latest_value": round(latest_val, 4),
             "latest_date": latest_date,
             "diff_prev": diff_prev,
+            "prev_date": prev_date,
             "diff_month": diff_month,
         })
 

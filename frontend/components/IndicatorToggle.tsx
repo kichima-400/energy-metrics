@@ -2,12 +2,14 @@
 
 import type { Indicator } from "@/lib/api";
 
-const CATEGORY_ORDER = ["原油", "天然ガス", "石炭", "為替", "金利", "国内"];
+const CATEGORY_ORDER = ["原油", "天然ガス", "石炭", "海運", "為替", "金利", "国内"];
 
 const COLORS: Record<string, string> = {
   wti_crude:      "#ef4444",
   brent_crude:    "#f97316",
   henry_hub:      "#3b82f6",
+  ttf_gas:        "#0ea5e9",
+  jkm_lng:        "#38bdf8",
   lng_export:     "#06b6d4",
   gas_storage:    "#8b5cf6",
   coal_australia: "#78716c",
@@ -20,6 +22,9 @@ const COLORS: Record<string, string> = {
   kerosene:       "#fb923c",
   jepx_system:    "#22c55e",
   jepx_tokyo:     "#4ade80",
+  bdry:           "#0f172a",
+  bwet:           "#1e3a5f",
+  zim:            "#2563eb",
 };
 
 type Props = {

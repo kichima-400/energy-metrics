@@ -15,10 +15,11 @@ import traceback
 from datetime import datetime
 
 COLLECTORS = [
-    ("FRED",   "collectors.fred"),
-    ("EIA",    "collectors.eia"),
-    ("JEPX",   "collectors.jepx"),
-    ("e-Stat", "collectors.estat"),
+    ("FRED",     "collectors.fred"),
+    ("EIA",      "collectors.eia"),
+    ("JEPX",     "collectors.jepx"),
+    ("e-Stat",   "collectors.estat"),
+    ("Shipping", "collectors.shipping"),
 ]
 
 
