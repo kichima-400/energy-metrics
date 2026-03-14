@@ -17,6 +17,10 @@ env/
 .DS_Store
 Thumbs.db
 
+# Next.js
+frontend/.next/
+frontend/node_modules/
+
 # エディタ
 .vscode/
 .idea/
