@@ -2,3 +2,5 @@ requests==2.32.3
 pandas==2.2.3
 fredapi==0.5.2
 python-dotenv==1.2.2
+fastapi==0.135.1
+uvicorn==0.41.0
