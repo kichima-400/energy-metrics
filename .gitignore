@@ -1,0 +1,22 @@
+# APIキー・環境変数
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# データファイル（GitHub Actionsが更新するため、差分管理のみ）
+# ※ data/ は追跡対象にする（コメントアウト状態）
+# data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# エディタ
+.vscode/
+.idea/
