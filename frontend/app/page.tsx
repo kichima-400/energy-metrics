@@ -24,13 +24,13 @@ const PERIODS = [
 ] as const;
 
 const DEFAULT_INDICATORS = [
-  "wti_crude",       // ガソリン ↔ 原油
-  "jkm_lng",         // 電気・ガス ↔ アジアLNG
-  "coal_australia",  // 電気 ↔ 石炭
-  "usd_jpy",         // 全般 ↔ 円安
-  "electricity",
-  "city_gas",
-  "gasoline",
+  "wti_crude",
+  "brent_crude",
+  "jkm_lng",
+  "coal_australia",
+  "gas_storage",
+  "usd_jpy",
+  "bwet",
 ];
 
 function toDateStr(daysAgo: number): string {
