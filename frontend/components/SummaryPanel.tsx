@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { SummaryItem } from "@/lib/api";
 
 const CATEGORY_ORDER = ["原油", "天然ガス", "石炭", "海運", "為替", "金利", "国内"];
@@ -39,11 +40,10 @@ function DiffBadge({ value }: { value: number | null }) {
   );
 }
 
-function Tooltip({ text }: { text: string }) {
+function DescriptionTooltip({ text, open }: { text: string; open: boolean }) {
+  if (!open) return null;
   return (
-    <div className="absolute z-50 bottom-full left-0 mb-2 w-72 pointer-events-none
-                    invisible group-hover:visible opacity-0 group-hover:opacity-100
-                    transition-opacity duration-150">
+    <div className="absolute z-50 bottom-full left-0 mb-2 w-72">
       <div className="bg-gray-900 dark:bg-gray-700 text-white text-xs rounded-lg px-3 py-2 shadow-lg leading-relaxed">
         {text}
         <div className="absolute top-full left-4 border-4 border-transparent border-t-gray-900 dark:border-t-gray-700" />
@@ -53,6 +53,8 @@ function Tooltip({ text }: { text: string }) {
 }
 
 export default function SummaryPanel({ items }: { items: SummaryItem[] }) {
+  const [openId, setOpenId] = useState<string | null>(null);
+
   const grouped = CATEGORY_ORDER.reduce<Record<string, SummaryItem[]>>(
     (acc, cat) => {
       acc[cat] = items.filter((i) => i.category === cat);
@@ -80,15 +82,34 @@ export default function SummaryPanel({ items }: { items: SummaryItem[] }) {
                   ? Math.abs(item.diff_month! / prevMonthVal) * 100
                   : 0;
                 const isAlert = changePct >= 5;
+                const hasDesc = !!DESCRIPTIONS[item.id];
 
                 return (
                   <div
                     key={item.id}
-                    className="relative group flex items-center justify-between gap-2 cursor-default rounded-lg px-1"
+                    className="relative group flex items-center justify-between gap-2 rounded-lg px-1"
                   >
-                    {DESCRIPTIONS[item.id] && <Tooltip text={DESCRIPTIONS[item.id]} />}
+                    {/* PCはホバー表示、スマホはタップ表示 */}
+                    {hasDesc && (
+                      <>
+                        {/* PC: hover */}
+                        <div className="absolute z-50 bottom-full left-0 mb-2 w-72 pointer-events-none
+                                        invisible group-hover:visible opacity-0 group-hover:opacity-100
+                                        transition-opacity duration-150 hidden md:block">
+                          <div className="bg-gray-900 dark:bg-gray-700 text-white text-xs rounded-lg px-3 py-2 shadow-lg leading-relaxed">
+                            {DESCRIPTIONS[item.id]}
+                            <div className="absolute top-full left-4 border-4 border-transparent border-t-gray-900 dark:border-t-gray-700" />
+                          </div>
+                        </div>
+                        {/* スマホ: タップ */}
+                        <DescriptionTooltip text={DESCRIPTIONS[item.id]} open={openId === item.id} />
+                      </>
+                    )}
                     <div className="min-w-0">
-                      <p className="text-sm font-medium text-gray-800 dark:text-gray-100 truncate underline decoration-dotted decoration-gray-300 dark:decoration-gray-600">
+                      <p
+                        className={`text-sm font-medium text-gray-800 dark:text-gray-100 truncate underline decoration-dotted decoration-gray-300 dark:decoration-gray-600 ${hasDesc ? "cursor-pointer" : "cursor-default"}`}
+                        onClick={() => hasDesc && setOpenId(openId === item.id ? null : item.id)}
+                      >
                         {item.label}
                       </p>
                       <p className="text-xs text-gray-400">{item.latest_date}</p>
