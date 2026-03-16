@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   LineChart,
   Line,
@@ -67,6 +68,14 @@ function calcTicks(rows: Record<string, string | number | null>[], seriesIds: st
 }
 
 export default function Chart({ data, normalize }: Props) {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   if (!data.dates.length) {
     return (
       <div className="flex items-center justify-center h-96 text-gray-400">
@@ -127,21 +136,23 @@ export default function Chart({ data, normalize }: Props) {
               : undefined
           }
         />
-        <Tooltip
-          contentStyle={{
-            fontSize: 12,
-            borderRadius: 8,
-            border: "1px solid #e5e7eb",
-            boxShadow: "0 4px 6px -1px rgba(0,0,0,0.1)",
-          }}
-          formatter={(value, name) => {
-            const series = data.series.find((s) => s.id === name);
-            const unit = normalize ? "（指数）" : series?.unit ?? "";
-            const num = typeof value === "number" ? value.toFixed(2) : value;
-            return [`${num} ${unit}`, series?.label ?? String(name)];
-          }}
-          labelFormatter={(label) => `📅 ${label}`}
-        />
+        {!isMobile && (
+          <Tooltip
+            contentStyle={{
+              fontSize: 12,
+              borderRadius: 8,
+              border: "1px solid #e5e7eb",
+              boxShadow: "0 4px 6px -1px rgba(0,0,0,0.1)",
+            }}
+            formatter={(value, name) => {
+              const series = data.series.find((s) => s.id === name);
+              const unit = normalize ? "（指数）" : series?.unit ?? "";
+              const num = typeof value === "number" ? value.toFixed(2) : value;
+              return [`${num} ${unit}`, series?.label ?? String(name)];
+            }}
+            labelFormatter={(label) => `📅 ${label}`}
+          />
+        )}
         <Legend
           formatter={(value) => {
             const s = data.series.find((s) => s.id === value);
