@@ -27,3 +27,6 @@ frontend/node_modules/
 
 # Claude Code（個人設定）
 .claude/
+
+# 自動収集ログ
+logs/
