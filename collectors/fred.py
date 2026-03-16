@@ -46,8 +46,7 @@ START_DATE = "2015-01-01"
 # 取得する指標の定義
 DAILY_SERIES = {
     "henry_hub_usd": "DHHNGSP",         # Henry Hub天然ガス (USD/MMBtu)
-    "dollar_index": "DTWEXBGS",         # ドル指数（貿易加重）
-    # usd_jpy は Yahoo Finance (shipping.py) に移行済み
+    # usd_jpy, dollar_index は Yahoo Finance (shipping.py) に移行済み
 }
 
 MONTHLY_SERIES = {

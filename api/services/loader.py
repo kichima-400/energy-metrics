@@ -31,7 +31,7 @@ INDICATORS: list[dict] = [
     {"id": "coal_australia", "csv": "fred_monthly.csv",  "column": "coal_australia_usd", "label": "豪州石炭",         "unit": "USD/トン",   "frequency": "monthly", "category": "石炭"},
     # 為替・金利
     {"id": "usd_jpy",        "csv": "shipping_daily.csv", "column": "usd_jpy",           "label": "ドル円",           "unit": "円/ドル",    "frequency": "daily",   "category": "為替"},
-    {"id": "dollar_index",   "csv": "fred_daily.csv",    "column": "dollar_index",       "label": "ドル指数",         "unit": "指数",       "frequency": "daily",   "category": "為替"},
+    {"id": "dollar_index",   "csv": "shipping_daily.csv", "column": "dollar_index",      "label": "ドル指数(DXY)",    "unit": "指数",       "frequency": "daily",   "category": "為替"},
     {"id": "fed_funds_rate", "csv": "fred_monthly.csv",  "column": "fed_funds_rate",     "label": "米国政策金利",     "unit": "%",          "frequency": "monthly", "category": "金利"},
     # 国内エネルギー価格（CPI指数）
     {"id": "electricity",    "csv": "estat_monthly.csv", "column": "electricity_index",  "label": "電気代指数",       "unit": "指数(2020=100)", "frequency": "monthly", "category": "国内"},
