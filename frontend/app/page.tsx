@@ -23,7 +23,15 @@ const PERIODS = [
   { label: "全期間", days: 365 * 15 },
 ] as const;
 
-const DEFAULT_INDICATORS = ["wti_crude", "usd_jpy", "electricity", "city_gas"];
+const DEFAULT_INDICATORS = [
+  "wti_crude",       // ガソリン ↔ 原油
+  "jkm_lng",         // 電気・ガス ↔ アジアLNG
+  "coal_australia",  // 電気 ↔ 石炭
+  "usd_jpy",         // 全般 ↔ 円安
+  "electricity",
+  "city_gas",
+  "gasoline",
+];
 
 function toDateStr(daysAgo: number): string {
   const d = new Date();
@@ -35,7 +43,7 @@ export default function Home() {
   const [indicators, setIndicators] = useState<Indicator[]>([]);
   const [selected, setSelected] = useState<Set<string>>(new Set(DEFAULT_INDICATORS));
   const [periodDays, setPeriodDays] = useState(365);
-  const [normalize, setNormalize] = useState(false);
+  const [normalize, setNormalize] = useState(true);
   const [chartData, setChartData] = useState<ChartData>({ dates: [], series: [] });
   const [summary, setSummary] = useState<SummaryItem[]>([]);
   const [loading, setLoading] = useState(false);
