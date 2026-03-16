@@ -31,27 +31,35 @@
 | 天然ガス | 米国ガス在庫 | EIA `NW2_EPG0_SWO_NUS_BCF` | 週次 |
 | 石炭 | 豪州石炭 | FRED `PCOALAUUSDM` | 月次 |
 | 為替 | ドル円 | Yahoo Finance `JPY=X` | 日次 |
-| 為替 | ドル指数(DXY) | Yahoo Finance `DX-Y.NYB` | 日次 |
 | 金利 | 米国政策金利 | FRED `FEDFUNDS` | 月次 |
 | 国内 | 電気代指数 | e-Stat CPI (2020=100) | 月次 |
 | 国内 | 都市ガス代指数 | e-Stat CPI (2020=100) | 月次 |
 | 国内 | ガソリン指数 | e-Stat CPI (2020=100) | 月次 |
 | 国内 | 灯油指数 | e-Stat CPI (2020=100) | 月次 |
+| 国内 | ハイオク小売価格 | 資源エネルギー庁 石油製品価格調査 | 週次 ※1 |
+| 国内 | ガソリン小売価格 | 資源エネルギー庁 石油製品価格調査 | 週次 ※1 |
+| 国内 | 灯油小売価格 | 資源エネルギー庁 石油製品価格調査 | 週次 ※1 |
 | 国内 | JEPX システムプライス | JEPX スポット市場 | 日次 |
 | 国内 | JEPX 東京エリア | JEPX スポット市場 | 日次 |
 | 海運 | ドライバルク運賃(BDRY) | Yahoo Finance `BDRY` | 日次 |
 | 海運 | タンカー運賃ETF(BWET) | Yahoo Finance `BWET` | 日次 |
 | 海運 | コンテナ海運株(ZIM) | Yahoo Finance `ZIM` | 日次 |
 
+> ※1 資源エネルギー庁サイトは海外IPからアクセス不可のため、Windowsタスクスケジューラによるローカル収集を併用（後述）
+
 ---
 
 ## アーキテクチャ
 
 ```
-GitHub Actions（毎日 JST 7:00）
-  └── collectors/ でデータ取得
+【自動収集①】GitHub Actions（毎日 JST 7:00）
+  └── Yahoo Finance・FRED・EIA・e-Stat・JEPX のデータを取得
   └── data/*.csv をリポジトリにcommit
   └── Vercel Deploy Hook で API を再デプロイ
+
+【自動収集②】Windowsタスクスケジューラ（毎日任意の時刻）
+  └── 資源エネルギー庁 週次ガソリン・灯油価格を取得（海外IPからアクセス不可のため）
+  └── run_collect.bat → python run_all.py → git push
 
 Vercel（API）                    Vercel（フロントエンド）
   └── FastAPI サーバーレス          └── Next.js
@@ -63,7 +71,8 @@ Vercel（API）                    Vercel（フロントエンド）
 | フロントエンド | Next.js 16 / TypeScript / Tailwind CSS / Recharts |
 | バックエンド | Python 3.12 / FastAPI / pandas |
 | ホスティング | Vercel（フロント・API 両方） |
-| データ更新 | GitHub Actions（日次 cron） |
+| データ更新（国際指標） | GitHub Actions（日次 cron） |
+| データ更新（国内小売価格） | Windowsタスクスケジューラ + `run_collect.bat` |
 | データ保存 | CSV ファイル（リポジトリ内 `data/`） |
 
 ---
@@ -113,13 +122,26 @@ NEXT_PUBLIC_API_URL=http://localhost:8001 npm run dev
 
 ## データ更新の仕組み
 
-GitHub Actions が毎日 JST 7:00 に以下を実行する:
+### GitHub Actions（国際指標）
 
-1. `python run_all.py` — 各コレクターでデータ取得
+毎日 JST 7:00 に以下を実行する:
+
+1. `python run_all.py` — Yahoo Finance・FRED・EIA・e-Stat・JEPX からデータ取得
 2. `data/` 以下の CSV に差分をcommit・push
 3. Vercel Deploy Hook を叩いて API を再デプロイ
 
 手動実行: GitHub リポジトリ → Actions → 「データ収集」→ Run workflow
+
+### Windowsタスクスケジューラ（国内小売価格）
+
+資源エネルギー庁サイトは海外IPからアクセスできないため、常時稼働のWindowsPC上でタスクスケジューラを使って自動収集する。
+
+1. `run_collect.bat` を毎日実行
+2. `python run_all.py` で全コレクター（エネ庁含む）を実行
+3. `data/` に変更があれば自動でcommit・push
+4. ログは `logs/collect_YYYYMMDD.log` に保存
+
+セットアップ手順は [DEPLOY.md](DEPLOY.md) を参照。
 
 ---
 
