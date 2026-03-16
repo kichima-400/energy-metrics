@@ -8,7 +8,7 @@
 
 ## 概要
 
-世界情勢（原油・LNG・石炭・為替・海運）が日本の消費者エネルギー価格（ガソリン・電気料金・ガス料金）に与える影響を可視化する。毎朝 JST 7:00 に最新データを自動取得し、ダッシュボードに反映する。
+世界情勢（原油・LNG・石炭・為替・海運）が日本の消費者エネルギー価格（ガソリン・電気料金・ガス料金）に与える影響を可視化する。毎日 JST 6:00 / 18:00 の2回、最新データを自動取得し、ダッシュボードに反映する。
 
 ### 主な機能
 
@@ -52,7 +52,7 @@
 ## アーキテクチャ
 
 ```
-【自動収集①】GitHub Actions（毎日 JST 7:00）
+【自動収集①】GitHub Actions（毎日 JST 6:00 / 18:00）
   └── Yahoo Finance・FRED・EIA・e-Stat・JEPX のデータを取得
   └── data/*.csv をリポジトリにcommit
   └── Vercel Deploy Hook で API を再デプロイ
@@ -124,7 +124,7 @@ NEXT_PUBLIC_API_URL=http://localhost:8001 npm run dev
 
 ### GitHub Actions（国際指標）
 
-毎日 JST 7:00 に以下を実行する:
+毎日 JST 6:00 と 18:00 の2回、以下を実行する:
 
 1. `python run_all.py` — Yahoo Finance・FRED・EIA・e-Stat・JEPX からデータ取得
 2. `data/` 以下の CSV に差分をcommit・push
