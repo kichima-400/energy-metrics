@@ -26,10 +26,11 @@ START_DATE = "2015-01-01"
 
 # Yahoo Finance ティッカー
 TICKERS: dict[str, str] = {
-    "wti_crude_usd":   "CL=F",   # WTI原油先物 (USD/バレル)
-    "brent_crude_usd": "BZ=F",   # Brent原油先物 (USD/バレル)
-    "ttf_gas_eur_mwh": "TTF=F",  # TTF欧州天然ガス先物 (EUR/MWh)
-    "usd_jpy":         "JPY=X",   # ドル円為替レート (円/ドル) ← FREDより1日早い
+    "wti_crude_usd":   "CL=F",      # WTI原油先物 (USD/バレル)
+    "brent_crude_usd": "BZ=F",      # Brent原油先物 (USD/バレル)
+    "ttf_gas_eur_mwh": "TTF=F",     # TTF欧州天然ガス先物 (EUR/MWh)
+    "usd_jpy":         "JPY=X",     # ドル円為替レート (円/ドル) ← FREDより1日早い
+    "eur_jpy":         "EURJPY=X",  # ユーロ円為替レート (円/ユーロ)
     "bdry": "BDRY",  # Breakwave Dry Bulk Shipping ETF (BDI 連動)
     "bwet": "BWET",  # Breakwave Tanker Shipping ETF   (BDTI/BCTI 連動)
     "zim":  "ZIM",   # ZIM Integrated Shipping          (コンテナ運賃連動株)

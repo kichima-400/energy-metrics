@@ -55,6 +55,7 @@ MONTHLY_SERIES = {
     "japan_interest_rate": "INTGSTJPM193N", # 日本政策金利 (%)
     "ttf_gas_usd": "PNGASEUUSDM",           # 欧州天然ガス/TTF連動 (USD/MMBtu) ← 中東情勢で高騰
     "jkm_lng_usd": "PNGASJPUSDM",          # アジアLNG現物/JKM (USD/MMBtu)  ← 中東情勢で高騰
+    "jpy_neer": "NBJPBIS",                  # 円名目実効為替レート (指数, BIS, 2020=100)
 }
 
 
