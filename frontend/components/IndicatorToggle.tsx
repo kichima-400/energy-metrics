@@ -14,6 +14,8 @@ const COLORS: Record<string, string> = {
   gas_storage:    "#8b5cf6",
   coal_australia: "#78716c",
   usd_jpy:        "#eab308",
+  eur_jpy:        "#84cc16",
+  jpy_neer:       "#a78bfa",
   dollar_index:   "#f59e0b",
   fed_funds_rate: "#6366f1",
   electricity:    "#10b981",
