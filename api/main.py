@@ -19,10 +19,14 @@ app = FastAPI(
     version="0.1.0",
 )
 
-# Next.js からのリクエストを許可
+# Next.js からのリクエストを許可（ローカル開発 + Vercel 本番）
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "https://*.vercel.app",
+    ],
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_methods=["GET"],
     allow_headers=["*"],
 )

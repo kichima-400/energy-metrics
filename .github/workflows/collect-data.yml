@@ -51,3 +51,7 @@ jobs:
           git add data/
           git commit -m "chore: データ更新 $(date +'%Y-%m-%d')"
           git push
+
+      - name: Vercel 再デプロイ（最新CSVを反映）
+        if: steps.diff.outputs.changed == 'true'
+        run: curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_API }}"
