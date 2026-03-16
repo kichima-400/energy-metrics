@@ -42,7 +42,7 @@ function toDateStr(daysAgo: number): string {
 export default function Home() {
   const [indicators, setIndicators] = useState<Indicator[]>([]);
   const [selected, setSelected] = useState<Set<string>>(new Set(DEFAULT_INDICATORS));
-  const [periodDays, setPeriodDays] = useState(365);
+  const [periodDays, setPeriodDays] = useState(90);
   const [normalize, setNormalize] = useState(true);
   const [chartData, setChartData] = useState<ChartData>({ dates: [], series: [] });
   const [summary, setSummary] = useState<SummaryItem[]>([]);
