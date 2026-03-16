@@ -45,11 +45,9 @@ START_DATE = "2015-01-01"
 
 # 取得する指標の定義
 DAILY_SERIES = {
-    "wti_crude_usd": "DCOILWTICO",      # WTI原油 (USD/バレル)
-    "brent_crude_usd": "DCOILBRENTEU",  # Brent原油 (USD/バレル)
-    "usd_jpy": "DEXJPUS",               # ドル円 (円/ドル)
     "henry_hub_usd": "DHHNGSP",         # Henry Hub天然ガス (USD/MMBtu)
     "dollar_index": "DTWEXBGS",         # ドル指数（貿易加重）
+    # usd_jpy は Yahoo Finance (shipping.py) に移行済み
 }
 
 MONTHLY_SERIES = {
