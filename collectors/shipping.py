@@ -30,7 +30,8 @@ TICKERS: dict[str, str] = {
     "brent_crude_usd": "BZ=F",   # Brent原油先物 (USD/バレル)
     "ttf_gas_eur_mwh": "TTF=F",  # TTF欧州天然ガス先物 (EUR/MWh)
     "usd_jpy":         "JPY=X",   # ドル円為替レート (円/ドル) ← FREDより1日早い
-    "dollar_index":    "DX-Y.NYB", # DXY ドル指数（6通貨、ICE） ← FREDより1日早い
+    "dollar_index":    "DX-Y.NYB",  # DXY ドル指数（6通貨、ICE） ← FREDより1日早い
+    "coal_europe_usd": "MTF=F",    # 欧州石炭先物（ARA、ICE）日次 ← 豪州月次より速報性高い
     "bdry": "BDRY",  # Breakwave Dry Bulk Shipping ETF (BDI 連動)
     "bwet": "BWET",  # Breakwave Tanker Shipping ETF   (BDTI/BCTI 連動)
     "zim":  "ZIM",   # ZIM Integrated Shipping          (コンテナ運賃連動株)

@@ -28,7 +28,7 @@ INDICATORS: list[dict] = [
     {"id": "jkm_lng",        "csv": "fred_monthly.csv",  "column": "jkm_lng_usd",        "label": "アジアLNG(JKM)",     "unit": "USD/MMBtu",  "frequency": "monthly", "category": "天然ガス"},
     {"id": "gas_storage",    "csv": "eia_weekly.csv",    "column": "us_gas_storage_bcf", "label": "米国ガス在庫",         "unit": "BCF",        "frequency": "weekly",  "category": "天然ガス"},
     # 石炭
-    {"id": "coal_australia", "csv": "fred_monthly.csv",  "column": "coal_australia_usd", "label": "豪州石炭",         "unit": "USD/トン",   "frequency": "monthly", "category": "石炭"},
+    {"id": "coal_australia", "csv": "shipping_daily.csv", "column": "coal_europe_usd",   "label": "欧州石炭先物(ARA)", "unit": "USD/トン",   "frequency": "daily",   "category": "石炭"},
     # 為替・金利
     {"id": "usd_jpy",        "csv": "shipping_daily.csv", "column": "usd_jpy",           "label": "ドル円",           "unit": "円/ドル",    "frequency": "daily",   "category": "為替"},
     {"id": "dollar_index",   "csv": "shipping_daily.csv", "column": "dollar_index",      "label": "ドル指数(DXY)",    "unit": "指数",       "frequency": "daily",   "category": "為替"},
