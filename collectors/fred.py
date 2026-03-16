@@ -149,18 +149,10 @@ def _print_summary(daily_df: pd.DataFrame, monthly_df: pd.DataFrame) -> None:
     print("\n--- 最新値サマリー ---")
 
     labels = {
-        "wti_crude_usd": "WTI原油      ",
-        "brent_crude_usd": "Brent原油    ",
-        "usd_jpy": "ドル円       ",
         "henry_hub_usd": "Henry Hub LNG",
-        "dollar_index": "ドル指数     ",
     }
     units = {
-        "wti_crude_usd": "USD/バレル",
-        "brent_crude_usd": "USD/バレル",
-        "usd_jpy": "円/ドル",
         "henry_hub_usd": "USD/MMBtu",
-        "dollar_index": "指数",
     }
 
     for col, label in labels.items():

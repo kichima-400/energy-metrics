@@ -6,8 +6,9 @@ cd /d %~dp0
 :: ログディレクトリ作成
 if not exist logs mkdir logs
 
-:: ログファイル（日付ごと）
-set LOGFILE=logs\collect_%date:~0,4%%date:~5,2%%date:~8,2%.log
+:: ログファイル（日付ごと）― PowerShell で環境非依存のYYYYMMDD形式を取得
+for /f "tokens=*" %%i in ('powershell -NoProfile -Command "Get-Date -Format yyyyMMdd"') do set TODAY=%%i
+set LOGFILE=logs\collect_%TODAY%.log
 
 echo ======================================== >> %LOGFILE% 2>&1
 echo 収集開始: %date% %time% >> %LOGFILE% 2>&1
