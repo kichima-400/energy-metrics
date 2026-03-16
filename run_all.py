@@ -20,6 +20,7 @@ COLLECTORS = [
     ("JEPX",     "collectors.jepx"),
     ("e-Stat",   "collectors.estat"),
     ("Shipping", "collectors.shipping"),
+    ("エネ庁",   "collectors.enecho"),
 ]
 
 

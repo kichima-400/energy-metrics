@@ -38,6 +38,10 @@ INDICATORS: list[dict] = [
     {"id": "city_gas",       "csv": "estat_monthly.csv", "column": "city_gas_index",     "label": "都市ガス代指数",   "unit": "指数(2020=100)", "frequency": "monthly", "category": "国内"},
     {"id": "gasoline",       "csv": "estat_monthly.csv", "column": "gasoline_index",     "label": "ガソリン指数",     "unit": "指数(2020=100)", "frequency": "monthly", "category": "国内"},
     {"id": "kerosene",       "csv": "estat_monthly.csv", "column": "kerosene_index",     "label": "灯油指数",         "unit": "指数(2020=100)", "frequency": "monthly", "category": "国内"},
+    # 国内石油製品小売価格（エネ庁・週次）
+    {"id": "premium_weekly",  "csv": "enecho_weekly.csv", "column": "premium_price_jpy_l",    "label": "ハイオク小売価格",   "unit": "円/L",   "frequency": "weekly", "category": "国内"},
+    {"id": "gasoline_weekly", "csv": "enecho_weekly.csv", "column": "gasoline_price_jpy_l",   "label": "ガソリン小売価格",   "unit": "円/L",   "frequency": "weekly", "category": "国内"},
+    {"id": "kerosene_weekly", "csv": "enecho_weekly.csv", "column": "kerosene_price_jpy_18l", "label": "灯油小売価格",       "unit": "円/18L", "frequency": "weekly", "category": "国内"},
     # 卸売電力
     {"id": "jepx_system",   "csv": "jepx_spot.csv",     "column": "system_price_jpy_kwh", "label": "JEPX システムプライス", "unit": "円/kWh", "frequency": "daily", "category": "国内"},
     {"id": "jepx_tokyo",    "csv": "jepx_spot.csv",     "column": "area_price_tokyo",   "label": "JEPX 東京エリア",     "unit": "円/kWh",   "frequency": "daily",   "category": "国内"},
