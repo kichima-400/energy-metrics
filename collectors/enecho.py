@@ -46,7 +46,7 @@ def _download(survey_date: date) -> bytes | None:
         fname = f"{survey_date.strftime('%y%m%d')}{suffix}.xlsx"
         url = BASE_URL + fname
         try:
-            r = requests.get(url, headers=HEADERS, timeout=60)
+            r = requests.get(url, headers=HEADERS, timeout=10)
             if r.status_code == 200:
                 print(f"  取得: {fname} ({len(r.content)//1024} KB)")
                 return r.content
@@ -74,7 +74,7 @@ def _parse_sheet(xl: pd.ExcelFile, sheet_idx: int, col_name: str) -> pd.Series:
 def fetch_all() -> pd.DataFrame:
     """最新ファイルを取得してDataFrameを返す。最大4週さかのぼる。"""
     print("【エネ庁 石油製品価格調査】")
-    for weeks_back in range(4):
+    for weeks_back in range(2):
         target = _latest_wednesday() - timedelta(weeks=weeks_back)
         content = _download(target)
         if content is None:
