@@ -1,0 +1,135 @@
+# エネルギー価格相関ダッシュボード
+
+原油・LNG・石炭・為替・海運指標と日本国内エネルギー価格の相関を可視化するWebアプリケーション。
+
+**ライブデモ:** https://energy-metrics-uydn.vercel.app/
+
+---
+
+## 概要
+
+世界情勢（原油・LNG・石炭・為替・海運）が日本の消費者エネルギー価格（ガソリン・電気料金・ガス料金）に与える影響を可視化する。毎朝 JST 7:00 に最新データを自動取得し、ダッシュボードに反映する。
+
+### 主な機能
+
+- **時系列チャート** — 複数指標を重ねて表示。正規化（初日=100）で単位の異なる指標を比較可能
+- **表示期間選択** — 1ヶ月 / 3ヶ月 / 6ヶ月 / 1年 / 5年 / 10年 / 全期間
+- **指標トグル** — カテゴリ別に21指標をON/OFF切り替え
+- **サマリーパネル** — 最新値・前値比・前月比をカテゴリ別に一覧表示
+
+---
+
+## 指標一覧
+
+| カテゴリ | 指標 | ソース | 更新頻度 |
+|---------|------|--------|---------|
+| 原油 | WTI原油 | Yahoo Finance `CL=F` | 日次 |
+| 原油 | Brent原油 | Yahoo Finance `BZ=F` | 日次 |
+| 天然ガス | Henry Hub LNG | FRED `DHHNGSP` | 日次 |
+| 天然ガス | 欧州天然ガス(TTF) | Yahoo Finance `TTF=F` | 日次 |
+| 天然ガス | アジアLNG(JKM) | FRED `PNGASJPUSDM` | 月次 |
+| 天然ガス | 米国ガス在庫 | EIA `NW2_EPG0_SWO_NUS_BCF` | 週次 |
+| 石炭 | 豪州石炭 | FRED `PCOALAUUSDM` | 月次 |
+| 為替 | ドル円 | Yahoo Finance `JPY=X` | 日次 |
+| 為替 | ドル指数(DXY) | Yahoo Finance `DX-Y.NYB` | 日次 |
+| 金利 | 米国政策金利 | FRED `FEDFUNDS` | 月次 |
+| 国内 | 電気代指数 | e-Stat CPI (2020=100) | 月次 |
+| 国内 | 都市ガス代指数 | e-Stat CPI (2020=100) | 月次 |
+| 国内 | ガソリン指数 | e-Stat CPI (2020=100) | 月次 |
+| 国内 | 灯油指数 | e-Stat CPI (2020=100) | 月次 |
+| 国内 | JEPX システムプライス | JEPX スポット市場 | 日次 |
+| 国内 | JEPX 東京エリア | JEPX スポット市場 | 日次 |
+| 海運 | ドライバルク運賃(BDRY) | Yahoo Finance `BDRY` | 日次 |
+| 海運 | タンカー運賃ETF(BWET) | Yahoo Finance `BWET` | 日次 |
+| 海運 | コンテナ海運株(ZIM) | Yahoo Finance `ZIM` | 日次 |
+
+---
+
+## アーキテクチャ
+
+```
+GitHub Actions（毎日 JST 7:00）
+  └── collectors/ でデータ取得
+  └── data/*.csv をリポジトリにcommit
+  └── Vercel Deploy Hook で API を再デプロイ
+
+Vercel（API）                    Vercel（フロントエンド）
+  └── FastAPI サーバーレス          └── Next.js
+  └── data/*.csv を読み込んで返す    └── API から取得してチャート表示
+```
+
+| レイヤー | 技術 |
+|---------|------|
+| フロントエンド | Next.js 16 / TypeScript / Tailwind CSS / Recharts |
+| バックエンド | Python 3.12 / FastAPI / pandas |
+| ホスティング | Vercel（フロント・API 両方） |
+| データ更新 | GitHub Actions（日次 cron） |
+| データ保存 | CSV ファイル（リポジトリ内 `data/`） |
+
+---
+
+## ローカル開発
+
+### 前提条件
+
+- Python 3.12+
+- Node.js 18+
+- 各種 API キー（`.env` ファイルに設定）
+
+### セットアップ
+
+```bash
+# リポジトリをクローン
+git clone https://github.com/kichima-400/energy-metrics.git
+cd energy-metrics
+
+# Python 依存ライブラリをインストール
+pip install -r requirements.txt
+
+# .env ファイルを作成（.env.example を参考に）
+cp .env.example .env
+# .env に各APIキーを記入
+
+# データを手動取得
+python run_all.py
+```
+
+### バックエンド起動
+
+```bash
+uvicorn api.main:app --port 8001
+# → http://localhost:8001/docs でAPIドキュメント確認
+```
+
+### フロントエンド起動
+
+```bash
+cd frontend
+NEXT_PUBLIC_API_URL=http://localhost:8001 npm run dev
+# → http://localhost:3000 でダッシュボード確認
+```
+
+---
+
+## データ更新の仕組み
+
+GitHub Actions が毎日 JST 7:00 に以下を実行する:
+
+1. `python run_all.py` — 各コレクターでデータ取得
+2. `data/` 以下の CSV に差分をcommit・push
+3. Vercel Deploy Hook を叩いて API を再デプロイ
+
+手動実行: GitHub リポジトリ → Actions → 「データ収集」→ Run workflow
+
+---
+
+## API エンドポイント
+
+ベースURL: https://energy-metrics-beta.vercel.app
+
+| エンドポイント | 説明 |
+|--------------|------|
+| `GET /health` | ヘルスチェック |
+| `GET /api/indicators` | 指標一覧 |
+| `GET /api/chart?ids=wti_crude&start=2024-01-01&end=2024-12-31` | 時系列データ |
+| `GET /api/summary` | 最新値・前値比・前月比 |
