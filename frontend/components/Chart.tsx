@@ -9,6 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
   CartesianGrid,
+  ReferenceLine,
 } from "recharts";
 import type { ChartData } from "@/lib/api";
 
@@ -117,6 +118,17 @@ export default function Chart({ data, normalize }: Props) {
             return <span style={{ fontSize: 12 }}>{s?.label ?? value}</span>;
           }}
         />
+        {normalize && [50, 100, 150].map((v) => (
+          <ReferenceLine
+            key={v}
+            yAxisId="main"
+            y={v}
+            stroke="#9ca3af"
+            strokeDasharray="4 4"
+            strokeWidth={1}
+            label={{ value: String(v), position: "right", fontSize: 10, fill: "#9ca3af" }}
+          />
+        ))}
         {data.series.map((s) => (
           <Line
             key={s.id}
