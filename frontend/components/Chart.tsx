@@ -41,6 +41,31 @@ type Props = {
   normalize: boolean;
 };
 
+function calcTicks(rows: Record<string, string | number | null>[], seriesIds: string[]): number[] {
+  let min = Infinity, max = -Infinity;
+  rows.forEach((row) => {
+    seriesIds.forEach((id) => {
+      const v = row[id];
+      if (typeof v === "number") {
+        if (v < min) min = v;
+        if (v > max) max = v;
+      }
+    });
+  });
+  if (!isFinite(min) || !isFinite(max)) return [];
+
+  const range = max - min;
+  const rawStep = range / 5;
+  const magnitude = Math.pow(10, Math.floor(Math.log10(rawStep)));
+  const step = Math.ceil(rawStep / magnitude) * magnitude;
+  const start = Math.floor(min / step) * step;
+  const ticks: number[] = [];
+  for (let v = start; v <= max + step * 0.1; v += step) {
+    ticks.push(Math.round(v * 100) / 100);
+  }
+  return ticks;
+}
+
 export default function Chart({ data, normalize }: Props) {
   if (!data.dates.length) {
     return (
@@ -73,6 +98,10 @@ export default function Chart({ data, normalize }: Props) {
     return row;
   });
 
+  // Y軸目盛りを動的計算
+  const seriesIds = data.series.map((s) => s.id);
+  const yTicks = calcTicks(chartRows, seriesIds);
+
   // X軸ラベルを間引く（多すぎると見づらい）
   const tickInterval = Math.max(1, Math.floor(data.dates.length / 12));
 
@@ -88,6 +117,7 @@ export default function Chart({ data, normalize }: Props) {
         />
         <YAxis
           yAxisId="main"
+          ticks={yTicks}
           tick={{ fontSize: 11, fill: "#9ca3af" }}
           tickLine={false}
           axisLine={false}
@@ -118,15 +148,13 @@ export default function Chart({ data, normalize }: Props) {
             return <span style={{ fontSize: 12 }}>{s?.label ?? value}</span>;
           }}
         />
-        {normalize && [50, 100, 150].map((v) => (
+        {yTicks.map((v) => (
           <ReferenceLine
             key={v}
             yAxisId="main"
             y={v}
-            stroke="#9ca3af"
-            strokeDasharray="4 4"
+            stroke="#e5e7eb"
             strokeWidth={1}
-            label={{ value: String(v), position: "right", fontSize: 10, fill: "#9ca3af" }}
           />
         ))}
         {data.series.map((s) => (
