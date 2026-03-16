@@ -26,7 +26,7 @@ const PERIODS = [
 const DEFAULT_INDICATORS = [
   "wti_crude",
   "brent_crude",
-  "jkm_lng",
+  "ttf_gas",
   "coal_australia",
   "gas_storage",
   "usd_jpy",
