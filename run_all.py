@@ -15,12 +15,13 @@ import traceback
 from datetime import datetime
 
 COLLECTORS = [
-    ("FRED",     "collectors.fred"),
-    ("EIA",      "collectors.eia"),
-    ("JEPX",     "collectors.jepx"),
-    ("e-Stat",   "collectors.estat"),
+    ("FRED",          "collectors.fred"),
+    ("EIA",           "collectors.eia"),
+    ("JEPX",          "collectors.jepx"),
+    ("e-Stat",        "collectors.estat"),
     ("Yahoo Finance", "collectors.shipping"),
-    ("エネ庁",   "collectors.enecho"),
+    # エネ庁（資源エネルギー庁）は海外IPからアクセス不可のため
+    # run_collect.bat（Windowsローカル）で個別実行
 ]
 
 
