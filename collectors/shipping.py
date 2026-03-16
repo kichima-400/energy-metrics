@@ -1,10 +1,15 @@
 """
-海運指数データ取得スクリプト
+Yahoo Finance データ取得スクリプト
 
 取得指標 (すべて Yahoo Finance):
-  - BDRY  Breakwave Dry Bulk ETF   (バルチック海運指数 BDI 連動)  日次 2018-
-  - BWET  Breakwave Tanker ETF     (タンカー運賃 BDTI/BCTI 連動)  日次 2023-
-  - ZIM   ZIM Integrated Shipping  (コンテナ運賃の動向参照)       日次 2021-
+  - CL=F     WTI原油先物          (USD/バレル)   日次
+  - BZ=F     Brent原油先物        (USD/バレル)   日次
+  - TTF=F    欧州天然ガス先物      (EUR/MWh)      日次
+  - JPY=X    ドル円為替レート      (円/ドル)      日次
+  - EURJPY=X ユーロ円為替レート    (円/ユーロ)    日次
+  - BDRY     Breakwave Dry Bulk ETF (BDI 連動)   日次 2018-
+  - BWET     Breakwave Tanker ETF  (BDTI/BCTI 連動) 日次 2023-
+  - ZIM      ZIM Integrated Shipping (コンテナ運賃) 日次 2021-
 
 注記:
   - BDI・BDTI・BCTI の実データは Baltic Exchange の有料サービス。
@@ -46,7 +51,7 @@ def fetch_all() -> pd.DataFrame:
         return pd.DataFrame()
 
     frames: dict[str, pd.Series] = {}
-    print("【海運指数】")
+    print("【Yahoo Finance】")
 
     for col_name, ticker in TICKERS.items():
         s = _fetch_ticker(yf, ticker, col_name)
@@ -119,7 +124,7 @@ def save_csv(df: pd.DataFrame) -> None:
 
 # ── メイン ────────────────────────────────────────────────────
 def main() -> None:
-    print("=== 海運指数データ取得 ===")
+    print("=== Yahoo Finance データ取得 ===")
     print(f"取得開始日: {START_DATE}\n")
 
     df = fetch_all()

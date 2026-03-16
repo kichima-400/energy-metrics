@@ -19,7 +19,7 @@ COLLECTORS = [
     ("EIA",      "collectors.eia"),
     ("JEPX",     "collectors.jepx"),
     ("e-Stat",   "collectors.estat"),
-    ("Shipping", "collectors.shipping"),
+    ("Yahoo Finance", "collectors.shipping"),
     ("エネ庁",   "collectors.enecho"),
 ]
 
