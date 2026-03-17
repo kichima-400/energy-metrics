@@ -21,6 +21,7 @@ COLLECTORS = [
     ("e-Stat",        "collectors.estat"),
     ("原油CIF",       "collectors.crude_oil_cif"),
     ("LNG CIF",       "collectors.lng_cif"),
+    ("石炭CIF",       "collectors.coal_cif"),
     ("Yahoo Finance", "collectors.shipping"),
     # エネ庁（資源エネルギー庁）は海外IPからアクセス不可のため
     # run_collect.bat（Windowsローカル）で個別実行
