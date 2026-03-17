@@ -134,6 +134,8 @@ def _parse_time_code(code: str) -> str | None:
     try:
         year = code[0:4]
         month = code[6:8]
+        if month == "00":   # 年間平均行はスキップ
+            return None
         return f"{year}-{month}"
     except (IndexError, ValueError):
         return None
