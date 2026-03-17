@@ -189,10 +189,11 @@ def get_crude_oil_cif_price(months: int = 12) -> list[dict]:
         RuntimeError: ファイル取得失敗
     """
     current_year = datetime.today().year
+    years_back   = (months + 11) // 12 + 1   # months から必要年数を計算
+    start_year   = current_year - years_back
     all_data: dict[str, dict] = {}
 
-    # 直近 2 年分のファイルを処理（12 ヶ月をカバーするため）
-    for year in range(current_year - 1, current_year + 1):
+    for year in range(start_year, current_year + 1):
         try:
             infids = _collect_stat_infids(year)
         except RuntimeError as e:
@@ -270,7 +271,7 @@ def main() -> None:
     print("データソース: 財務省 普通貿易統計 / HS 2709 / 輸入 / 月次\n")
 
     try:
-        records = get_crude_oil_cif_price(months=24)
+        records = get_crude_oil_cif_price(months=120)
     except RuntimeError as e:
         print(f"[ERROR] {e}", file=sys.stderr)
         sys.exit(1)
