@@ -92,31 +92,32 @@ export default function SummaryPanel({ items }: { items: SummaryItem[] }) {
                 return (
                   <div
                     key={item.id}
-                    className="relative group flex items-center justify-between gap-2 rounded-lg px-1"
+                    className="relative flex items-center justify-between gap-2 rounded-lg px-1"
                   >
-                    {/* PCはホバー表示、スマホはタップ表示 */}
+                    {/* スマホ: タップ */}
                     {hasDesc && (
-                      <>
-                        {/* PC: hover */}
-                        <div className="absolute z-50 bottom-full left-0 mb-2 w-72 pointer-events-none
-                                        invisible group-hover:visible opacity-0 group-hover:opacity-100
-                                        transition-opacity duration-150 hidden md:block">
-                          <div className="bg-gray-900 dark:bg-gray-700 text-white text-xs rounded-lg px-3 py-2 shadow-lg leading-relaxed">
-                            {DESCRIPTIONS[item.id]}
-                            <div className="absolute top-full left-4 border-4 border-transparent border-t-gray-900 dark:border-t-gray-700" />
-                          </div>
-                        </div>
-                        {/* スマホ: タップ */}
-                        <DescriptionTooltip text={DESCRIPTIONS[item.id]} open={openId === item.id} />
-                      </>
+                      <DescriptionTooltip text={DESCRIPTIONS[item.id]} open={openId === item.id} />
                     )}
                     <div className="min-w-0">
-                      <p
-                        className={`text-sm font-medium text-gray-800 dark:text-gray-100 truncate underline decoration-dotted decoration-gray-300 dark:decoration-gray-600 ${hasDesc ? "cursor-pointer" : "cursor-default"}`}
-                        onClick={() => hasDesc && setOpenId(openId === item.id ? null : item.id)}
-                      >
-                        {item.label}
-                      </p>
+                      <div className="relative group inline-block max-w-full">
+                        <p
+                          className={`text-sm font-medium text-gray-800 dark:text-gray-100 truncate underline decoration-dotted decoration-gray-300 dark:decoration-gray-600 ${hasDesc ? "cursor-pointer" : "cursor-default"}`}
+                          onClick={() => hasDesc && setOpenId(openId === item.id ? null : item.id)}
+                        >
+                          {item.label}
+                        </p>
+                        {/* PC: hover — ラベル上のみ */}
+                        {hasDesc && (
+                          <div className="absolute z-50 bottom-full left-0 mb-2 w-72 pointer-events-none
+                                          invisible group-hover:visible opacity-0 group-hover:opacity-100
+                                          transition-opacity duration-150 hidden md:block">
+                            <div className="bg-gray-900 dark:bg-gray-700 text-white text-xs rounded-lg px-3 py-2 shadow-lg leading-relaxed">
+                              {DESCRIPTIONS[item.id]}
+                              <div className="absolute top-full left-4 border-4 border-transparent border-t-gray-900 dark:border-t-gray-700" />
+                            </div>
+                          </div>
+                        )}
+                      </div>
                       <p className="text-xs text-gray-400">{item.latest_date}</p>
                     </div>
                     <div className="text-right shrink-0">
