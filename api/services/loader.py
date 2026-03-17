@@ -20,8 +20,9 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data")
 
 INDICATORS: list[dict] = [
     # 国際原油（Yahoo Finance 先物価格 CL=F / BZ=F — FREDより約4日早い）
-    {"id": "wti_crude",      "csv": "shipping_daily.csv", "column": "wti_crude_usd",   "label": "WTI原油",   "unit": "USD/バレル", "frequency": "daily", "category": "原油"},
-    {"id": "brent_crude",    "csv": "shipping_daily.csv", "column": "brent_crude_usd", "label": "Brent原油", "unit": "USD/バレル", "frequency": "daily", "category": "原油"},
+    {"id": "wti_crude",      "csv": "shipping_daily.csv",        "column": "wti_crude_usd",   "label": "WTI原油",       "unit": "USD/バレル", "frequency": "daily",   "category": "原油"},
+    {"id": "brent_crude",    "csv": "shipping_daily.csv",        "column": "brent_crude_usd", "label": "Brent原油",     "unit": "USD/バレル", "frequency": "daily",   "category": "原油"},
+    {"id": "crude_oil_cif",  "csv": "crude_oil_cif_monthly.csv", "column": "cif_yen_per_kl",  "label": "原油CIF輸入価格", "unit": "円/KL",      "frequency": "monthly", "category": "原油"},
     # 天然ガス
     {"id": "henry_hub",      "csv": "fred_daily.csv",    "column": "henry_hub_usd",      "label": "Henry Hub LNG",       "unit": "USD/MMBtu",  "frequency": "daily",   "category": "天然ガス"},
     {"id": "ttf_gas",        "csv": "shipping_daily.csv", "column": "ttf_gas_eur_mwh",   "label": "欧州天然ガス(TTF)",   "unit": "EUR/MWh",    "frequency": "daily",   "category": "天然ガス"},
