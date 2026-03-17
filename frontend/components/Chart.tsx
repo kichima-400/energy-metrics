@@ -15,8 +15,10 @@ import {
 import type { ChartData } from "@/lib/api";
 
 const COLORS: Record<string, string> = {
-  wti_crude:      "#ef4444",
-  brent_crude:    "#f97316",
+  wti_crude:            "#ef4444",
+  brent_crude:          "#f97316",
+  crude_oil_cif:        "#b45309",
+  crude_oil_cif_volume: "#d97706",
   henry_hub:      "#3b82f6",
   ttf_gas:        "#0ea5e9",
   jkm_lng:        "#38bdf8",

@@ -240,23 +240,29 @@ def _save_csv(records: list[dict]) -> None:
     """取得データを CSV に差分追記する（既存月は上書きしない）。"""
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
 
-    existing: dict[str, str] = {}
+    existing: dict[str, dict] = {}
     if os.path.exists(OUTPUT_PATH):
         with open(OUTPUT_PATH, newline="", encoding="utf-8") as f:
             reader = csv.DictReader(f)
             for row in reader:
-                existing[row["date"]] = row["cif_yen_per_kl"]
+                existing[row["date"]] = {
+                    "cif_yen_per_kl":  row["cif_yen_per_kl"],
+                    "quantity_mankl":   row.get("quantity_mankl", ""),
+                }
 
     new_count = sum(1 for r in records if r["year_month"] not in existing)
     combined  = dict(existing)
     for r in records:
-        combined[r["year_month"]] = str(r["cif_yen_per_kl"])
+        combined[r["year_month"]] = {
+            "cif_yen_per_kl": str(r["cif_yen_per_kl"]),
+            "quantity_mankl":  str(round(r["quantity_kl"] / 10000, 1)),
+        }
 
     with open(OUTPUT_PATH, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["date", "cif_yen_per_kl"])
-        for date_key, val in sorted(combined.items()):
-            writer.writerow([date_key, val])
+        writer.writerow(["date", "cif_yen_per_kl", "quantity_mankl"])
+        for date_key, vals in sorted(combined.items()):
+            writer.writerow([date_key, vals["cif_yen_per_kl"], vals["quantity_mankl"]])
 
     if new_count > 0:
         print(f"  {new_count} 行を追記 → 合計 {len(combined)} 行")
