@@ -25,7 +25,7 @@ INDICATORS: list[dict] = [
     {"id": "wti_crude",      "csv": "shipping_daily.csv",        "column": "wti_crude_usd",   "label": "WTI原油",       "unit": "USD/バレル", "frequency": "daily",   "category": "原油"},
     {"id": "brent_crude",    "csv": "shipping_daily.csv",        "column": "brent_crude_usd", "label": "Brent原油",     "unit": "USD/バレル", "frequency": "daily",   "category": "原油"},
     # 天然ガス（国内輸入）
-    {"id": "lng_cif",        "csv": "lng_cif_monthly.csv", "column": "cif_yen_per_mt", "label": "LNG CIF輸入価格", "unit": "円/MT",   "frequency": "monthly", "category": "天然ガス"},
+    {"id": "lng_cif",        "csv": "lng_cif_monthly.csv", "column": "cif_yen_per_mt", "label": "LNG CIF輸入価格", "unit": "円/トン",   "frequency": "monthly", "category": "天然ガス"},
     {"id": "lng_cif_volume", "csv": "lng_cif_monthly.csv", "column": "quantity_mant",  "label": "LNG CIF輸入量",   "unit": "万トン",  "frequency": "monthly", "category": "天然ガス"},
     # 天然ガス（国際指標）
     {"id": "henry_hub",      "csv": "fred_daily.csv",    "column": "henry_hub_usd",      "label": "Henry Hub LNG",       "unit": "USD/MMBtu",  "frequency": "daily",   "category": "天然ガス"},
