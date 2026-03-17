@@ -14,7 +14,7 @@
 
 - **時系列チャート** — 複数指標を重ねて表示。正規化（初日=100）で単位の異なる指標を比較可能
 - **表示期間選択** — 1ヶ月 / 3ヶ月 / 6ヶ月 / 1年 / 3年 / 5年 / 10年 / 全期間
-- **指標トグル** — カテゴリ別に24指標をON/OFF切り替え
+- **指標トグル** — カテゴリ別に29指標をON/OFF切り替え
 - **サマリーパネル** — 最新値・前値比・前月比をカテゴリ別に一覧表示
 
 ---
@@ -23,12 +23,18 @@
 
 | カテゴリ | 指標 | ソース | 更新頻度 |
 |---------|------|--------|---------|
+| 原油 | 原油CIF輸入価格 | 財務省 普通貿易統計 HS 2709 | 月次 |
+| 原油 | 原油CIF輸入量 | 財務省 普通貿易統計 HS 2709 | 月次 |
 | 原油 | WTI原油 | Yahoo Finance `CL=F` | 日次 |
 | 原油 | Brent原油 | Yahoo Finance `BZ=F` | 日次 |
+| 天然ガス | LNG CIF輸入価格 | 財務省 普通貿易統計 HS 271111 | 月次 |
+| 天然ガス | LNG CIF輸入量 | 財務省 普通貿易統計 HS 271111 | 月次 |
 | 天然ガス | Henry Hub LNG | FRED `DHHNGSP` | 日次 |
 | 天然ガス | 欧州天然ガス(TTF) | Yahoo Finance `TTF=F` | 日次 |
 | 天然ガス | アジアLNG(JKM) | FRED `PNGASJPUSDM` | 月次 |
 | 天然ガス | 米国ガス在庫 | EIA `NW2_EPG0_SWO_NUS_BCF` | 週次 |
+| 石炭 | 石炭CIF輸入価格 | 財務省 普通貿易統計 HS 27011209（一般炭） | 月次 |
+| 石炭 | 石炭CIF輸入量 | 財務省 普通貿易統計 HS 27011209（一般炭） | 月次 |
 | 石炭 | 豪州石炭 | FRED `PCOALAUUSDM` | 月次 |
 | 為替 | ドル円 | Yahoo Finance `JPY=X` | 日次 |
 | 為替 | ユーロ円 | Yahoo Finance `EURJPY=X` | 日次 |
@@ -36,7 +42,6 @@
 | 金利 | 米国政策金利 | FRED `FEDFUNDS` | 月次 |
 | 国内 | 電気代指数 | e-Stat CPI (2020=100) | 月次 |
 | 国内 | 都市ガス代指数 | e-Stat CPI (2020=100) | 月次 |
-| 国内 | ガソリン指数 | e-Stat CPI (2020=100) | 月次 |
 | 国内 | 灯油指数 | e-Stat CPI (2020=100) | 月次 |
 | 国内 | ガソリン元売り価格 | 資源エネルギー庁 石油製品価格調査 | 月次 ※1 |
 | 国内 | ハイオク小売価格 | 資源エネルギー庁 石油製品価格調査 | 週次 ※1 |
@@ -129,7 +134,7 @@ NEXT_PUBLIC_API_URL=http://localhost:8001 npm run dev
 
 毎日 JST 6:00 と 18:00 の2回、以下を実行する:
 
-1. `python run_all.py` — Yahoo Finance・FRED・EIA・e-Stat・JEPX からデータ取得
+1. `python run_all.py` — Yahoo Finance・FRED・EIA・e-Stat・JEPX・普通貿易統計 からデータ取得
 2. `data/` 以下の CSV に差分をcommit・push
 3. Vercel Deploy Hook を叩いて API を再デプロイ
 
