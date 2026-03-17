@@ -165,6 +165,8 @@ def get_summary() -> list[dict]:
     """各指標の最新値・前日比・前月比を返す。"""
     result = []
     for ind in INDICATORS:
+        if ind.get("hidden"):
+            continue
         s = _get_df(ind)
         if s.empty:
             continue
