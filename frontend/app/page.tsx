@@ -41,6 +41,10 @@ function toDateStr(daysAgo: number): string {
   return d.toISOString().slice(0, 10);
 }
 
+const LS_SELECTED  = "em_selected";
+const LS_PERIOD    = "em_period";
+const LS_NORMALIZE = "em_normalize";
+
 export default function Home() {
   const [indicators, setIndicators] = useState<Indicator[]>([]);
   const [selected, setSelected] = useState<Set<string>>(new Set(DEFAULT_INDICATORS));
@@ -50,6 +54,31 @@ export default function Home() {
   const [summary, setSummary] = useState<SummaryItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // localStorage から前回の設定を復元（初回マウント時のみ）
+  useEffect(() => {
+    try {
+      const savedSelected = localStorage.getItem(LS_SELECTED);
+      if (savedSelected) setSelected(new Set(JSON.parse(savedSelected)));
+      const savedPeriod = localStorage.getItem(LS_PERIOD);
+      if (savedPeriod) setPeriodDays(Number(savedPeriod));
+      const savedNormalize = localStorage.getItem(LS_NORMALIZE);
+      if (savedNormalize !== null) setNormalize(savedNormalize === "true");
+    } catch {}
+  }, []);
+
+  // 設定変更時に localStorage へ保存
+  useEffect(() => {
+    localStorage.setItem(LS_SELECTED, JSON.stringify(Array.from(selected)));
+  }, [selected]);
+
+  useEffect(() => {
+    localStorage.setItem(LS_PERIOD, String(periodDays));
+  }, [periodDays]);
+
+  useEffect(() => {
+    localStorage.setItem(LS_NORMALIZE, String(normalize));
+  }, [normalize]);
 
   // 指標一覧・サマリーを初回取得
   useEffect(() => {
