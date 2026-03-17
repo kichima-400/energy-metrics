@@ -19,11 +19,11 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data")
 # frequency: データ頻度
 
 INDICATORS: list[dict] = [
+    {"id": "crude_oil_cif",        "csv": "crude_oil_cif_monthly.csv", "column": "cif_yen_per_kl",   "label": "原油CIF輸入価格", "unit": "円/KL",      "frequency": "monthly", "category": "原油"},
+    {"id": "crude_oil_cif_volume", "csv": "crude_oil_cif_monthly.csv", "column": "quantity_mankl",   "label": "原油CIF輸入量",   "unit": "万KL",       "frequency": "monthly", "category": "原油"},
     # 国際原油（Yahoo Finance 先物価格 CL=F / BZ=F — FREDより約4日早い）
     {"id": "wti_crude",      "csv": "shipping_daily.csv",        "column": "wti_crude_usd",   "label": "WTI原油",       "unit": "USD/バレル", "frequency": "daily",   "category": "原油"},
     {"id": "brent_crude",    "csv": "shipping_daily.csv",        "column": "brent_crude_usd", "label": "Brent原油",     "unit": "USD/バレル", "frequency": "daily",   "category": "原油"},
-    {"id": "crude_oil_cif",        "csv": "crude_oil_cif_monthly.csv", "column": "cif_yen_per_kl",   "label": "原油CIF輸入価格", "unit": "円/KL",   "frequency": "monthly", "category": "原油"},
-    {"id": "crude_oil_cif_volume", "csv": "crude_oil_cif_monthly.csv", "column": "quantity_mankl",   "label": "原油CIF輸入量",   "unit": "万KL",    "frequency": "monthly", "category": "原油"},
     # 天然ガス（国内輸入）
     {"id": "lng_cif",        "csv": "lng_cif_monthly.csv", "column": "cif_yen_per_mt", "label": "LNG CIF輸入価格", "unit": "円/MT",   "frequency": "monthly", "category": "天然ガス"},
     {"id": "lng_cif_volume", "csv": "lng_cif_monthly.csv", "column": "quantity_mant",  "label": "LNG CIF輸入量",   "unit": "万トン",  "frequency": "monthly", "category": "天然ガス"},
