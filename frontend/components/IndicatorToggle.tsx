@@ -7,6 +7,7 @@ const CATEGORY_ORDER = ["原油", "天然ガス", "石炭", "海運", "為替", 
 const COLORS: Record<string, string> = {
   wti_crude:      "#ef4444",
   brent_crude:    "#f97316",
+  crude_oil_cif:  "#b45309",
   henry_hub:      "#3b82f6",
   ttf_gas:        "#0ea5e9",
   jkm_lng:        "#38bdf8",
