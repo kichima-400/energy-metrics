@@ -38,7 +38,7 @@ INDICATORS: list[dict] = [
     # 国内エネルギー価格（CPI指数）
     {"id": "electricity",    "csv": "estat_monthly.csv", "column": "electricity_index",  "label": "電気代指数",       "unit": "指数(2020=100)", "frequency": "monthly", "category": "国内"},
     {"id": "city_gas",       "csv": "estat_monthly.csv", "column": "city_gas_index",     "label": "都市ガス代指数",   "unit": "指数(2020=100)", "frequency": "monthly", "category": "国内"},
-    {"id": "gasoline",       "csv": "estat_monthly.csv", "column": "gasoline_index",     "label": "ガソリン指数",     "unit": "指数(2020=100)", "frequency": "monthly", "category": "国内"},
+    {"id": "gasoline",       "csv": "estat_monthly.csv", "column": "gasoline_index",     "label": "ガソリン指数",     "unit": "指数(2020=100)", "frequency": "monthly", "category": "国内", "hidden": True},
     {"id": "kerosene",       "csv": "estat_monthly.csv", "column": "kerosene_index",     "label": "灯油指数",         "unit": "指数(2020=100)", "frequency": "monthly", "category": "国内"},
     # 国内石油製品元売り価格（エネ庁・月次）
     {"id": "gasoline_wholesale", "csv": "enecho_monthly.csv", "column": "gasoline_wholesale_jpy_l", "label": "ガソリン元売り価格", "unit": "円/L", "frequency": "monthly", "category": "国内"},
@@ -99,6 +99,7 @@ def get_indicators() -> list[dict]:
             "category": ind["category"],
         }
         for ind in INDICATORS
+        if not ind.get("hidden")
     ]
 
 
