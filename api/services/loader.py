@@ -59,6 +59,9 @@ INDICATORS: list[dict] = [
     {"id": "bdry",  "csv": "shipping_daily.csv", "column": "bdry", "label": "ドライバルク運賃(BDRY)",    "unit": "USD",  "frequency": "daily", "category": "海運"},
     {"id": "bwet",  "csv": "shipping_daily.csv", "column": "bwet", "label": "タンカー運賃ETF(BWET)",     "unit": "USD",  "frequency": "daily", "category": "海運"},
     {"id": "zim",   "csv": "shipping_daily.csv", "column": "zim",  "label": "コンテナ海運株(ZIM)",       "unit": "USD",  "frequency": "daily", "category": "海運"},
+    # ホルムズ海峡通過隻数（IMF PortWatch・週次更新）
+    {"id": "hormuz_total",  "csv": "portwatch_daily.csv", "column": "n_total",  "label": "ホルムズ海峡通過総隻数",   "unit": "隻", "frequency": "daily", "category": "海運"},
+    {"id": "hormuz_tanker", "csv": "portwatch_daily.csv", "column": "n_tanker", "label": "ホルムズ海峡タンカー隻数", "unit": "隻", "frequency": "daily", "category": "海運"},
 ]
 
 _INDICATOR_MAP: dict[str, dict] = {ind["id"]: ind for ind in INDICATORS}

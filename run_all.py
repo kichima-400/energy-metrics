@@ -23,6 +23,7 @@ COLLECTORS = [
     ("LNG CIF",       "collectors.lng_cif"),
     ("石炭CIF",       "collectors.coal_cif"),
     ("Yahoo Finance", "collectors.shipping"),
+    ("Port Watch",    "collectors.portwatch"),
     # エネ庁（資源エネルギー庁）は海外IPからアクセス不可のため
     # run_collect.bat（Windowsローカル）で個別実行
 ]
